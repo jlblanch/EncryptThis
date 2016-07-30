@@ -30,25 +30,7 @@ public class Decryption {
     private static final String KEYFAC = "PBKDF2WithHmacSHA1";
     
     
-    /**
-     * This method obtains a password from the user using a JPasswordField
-     * @return the password value the user entered
-     */
-    public static String getUserPassword(){
-        JPasswordField pwd = new JPasswordField(15);
-        String pw = "";
-        int action = JOptionPane.showConfirmDialog(null, pwd,"Enter Password",JOptionPane.OK_CANCEL_OPTION);
-        if(action < 0)
-            JOptionPane.showMessageDialog(null,"Cancel, X or escape key selected");
-        else 
-            pw= new String(pwd.getPassword());
-        
-        //String pw = JOptionPane.showInputDialog("Create a password.");
-        return pw;
-        //String pw = JOptionPane.showInputDialog("Enter the password.");
-        //return pw;
-    }
-   
+       
     /**
      * 
      * @param file
