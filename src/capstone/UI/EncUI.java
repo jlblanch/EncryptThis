@@ -198,9 +198,7 @@ public class EncUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jFileChooser1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser1ActionPerformed
 
-    }//GEN-LAST:event_jFileChooser1ActionPerformed
 
     private void decButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decButtonActionPerformed
         String output;
@@ -226,9 +224,6 @@ public class EncUI extends javax.swing.JFrame {
 
     }//GEN-LAST:event_decButtonActionPerformed
 
-    private void jFileChooser1ComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jFileChooser1ComponentHidden
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFileChooser1ComponentHidden
 
     private void encButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encButtonActionPerformed
         String output;
