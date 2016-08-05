@@ -12,6 +12,7 @@ import capstone.fileio.FileIO;
 
 //Todo:  Possible move all File I/O Operations to File IO class
 import java.io.File;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,6 +29,7 @@ import javax.swing.JPasswordField;
  * @author Jeremy Blanchard
  * @author Omar Herrera
  */
+@SuppressWarnings("serial")
 public class EncUI extends javax.swing.JFrame {
 
     static FileIO fio = new FileIO();
@@ -65,7 +67,6 @@ public class EncUI extends javax.swing.JFrame {
         decButton.setText("Decrypt");
         decButton.setMaximumSize(new java.awt.Dimension(69, 23));
         decButton.setMinimumSize(new java.awt.Dimension(69, 23));
-        decButton.setNextFocusableComponent(exitBtn);
         decButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 decButtonActionPerformed(evt);
@@ -73,7 +74,6 @@ public class EncUI extends javax.swing.JFrame {
         });
 
         encButton.setText("Encrypt");
-        encButton.setNextFocusableComponent(decButton);
         encButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 encButtonActionPerformed(evt);
@@ -90,7 +90,6 @@ public class EncUI extends javax.swing.JFrame {
         fileNameLbl.setLabelFor(fileTextField);
         fileNameLbl.setText("Filename:");
 
-        fileTextField.setNextFocusableComponent(fcBtn);
         fileTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileTextFieldActionPerformed(evt);
@@ -98,7 +97,6 @@ public class EncUI extends javax.swing.JFrame {
         });
 
         fcBtn.setText("...");
-        fcBtn.setNextFocusableComponent(encButton);
         fcBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fcBtnActionPerformed(evt);
@@ -108,7 +106,6 @@ public class EncUI extends javax.swing.JFrame {
         exitBtn.setText("Exit");
         exitBtn.setMaximumSize(new java.awt.Dimension(69, 23));
         exitBtn.setMinimumSize(new java.awt.Dimension(69, 23));
-        exitBtn.setNextFocusableComponent(fileTextField);
         exitBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitBtnActionPerformed(evt);
@@ -192,7 +189,7 @@ public class EncUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(encryptPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -220,7 +217,7 @@ public class EncUI extends javax.swing.JFrame {
             fileTextField.setText("");            
         }
 
-        fio.cleanup();
+        cleanup();        
 
     }//GEN-LAST:event_decButtonActionPerformed
 
@@ -237,15 +234,15 @@ public class EncUI extends javax.swing.JFrame {
                 output = Encryption.encrypt(fio.getDecFile(),pw);
                 infoTextArea.append("\nEncryption Successful");
                 infoTextArea.append("\nOutput File Name:  \n " + output);
-            } catch (Exception e) {
-                infoTextArea.append("\nFile Encryption Failed:  \n" + e);
+            } catch (Exception ex) {
+                infoTextArea.append("\nFile Encryption Failed:  \n" + ex);
             }
         }else{
-            infoTextArea.append("\nFile Encryption Cancelled");
+            infoTextArea.append("\nNo Password Entered\nFile Encryption Cancelled");
             fileTextField.setText("");
         }
 
-        fio.cleanup();
+        cleanup();
 
     }//GEN-LAST:event_encButtonActionPerformed
 
@@ -273,25 +270,28 @@ public class EncUI extends javax.swing.JFrame {
     private void fcBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fcBtnActionPerformed
         File file = selectFile();
         if(file!=null){
-            if (isEncrypted(file)) {
+            if (fio.isEncrypted(file)) {
+                encButton.setEnabled(false);
                 fio.setEncFile(file);
             } else {
+                decButton.setEnabled(false);
                 fio.setDecFile(file);
             }
-            infoTextArea.append("File Selected:  " + file.getName());
+            infoTextArea.append("\nFile Selected:  " + file.getName());
             fileTextField.setText(file.getAbsolutePath());
         }else{
             infoTextArea.append("\nFile Selection Cancelled");
-        }
-        
+        }        
     }//GEN-LAST:event_fcBtnActionPerformed
 
     private void fileTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileTextFieldActionPerformed
         Path path = Paths.get(fileTextField.getText()).toAbsolutePath();
         if (Files.exists(path)) {
-            if (isEncrypted(path)) {
-                fio.setEncFile(path);
+            if (fio.isEncrypted(path)) {
+                encButton.setEnabled(false);
+                fio.setEncFile(path);                
             } else {
+                decButton.setEnabled(false);
                 fio.setDecFile(path);
             }
         } else {
@@ -308,29 +308,7 @@ public class EncUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_exitBtnActionPerformed
 
-    /**
-     * This method performs a check on whether the File object passed has a
-     * suffix of "aes" which indicates the file is encrypted
-     *
-     * @param file The File object passed to the method
-     * @return A boolean value of True if file has "aes" suffix or False if it
-     * does not.
-     */
-    private boolean isEncrypted(File file) {
-        return file.getName().endsWith("aes");
-    }
-
-    /**
-     * This method performs a check on whether the Path object passed has a
-     * suffix of "aes" in the filename which indicates the file is encrypted
-     *
-     * @param path The Path object passed to the method
-     * @return A boolean value of True if file associated with the passed Path
-     * object has an "aes" suffix or False if it does not.
-     */
-    private boolean isEncrypted(Path path) {
-        return path.getFileName().endsWith("aes");
-    }
+    
 
     /**
      * This method instantiates a JFileChooser and returns the File object
@@ -393,4 +371,12 @@ public class EncUI extends javax.swing.JFrame {
     private javax.swing.JLabel statusLabel;
     private javax.swing.JLabel titleLbl;
     // End of variables declaration//GEN-END:variables
+
+    private void cleanup() {
+        fileTextField.setText("");
+        decButton.setEnabled(true);
+        encButton.setEnabled(true);
+        fio.cleanup();
+    }
+    
 }
