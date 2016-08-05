@@ -1,7 +1,25 @@
 # EncryptThis
 Java application that performs AES file encryption and decryption
 
-When the application is started, the UI is very minimal as it only contains a single editable text area where the user can enter the file system path to the specified file or they can use the associated button to open a file chooser to select a file.  Three buttons below the file selection are the available options, which are "Encrypt", "Decrypt", and "Exit".
+At this time, the jar is executable from the command line only.   When executing the jar, the user is able to pass in command line arguments as follows:
+
+     java -jar Capstone.jar [mode] [filepath]
+     [mode] = mode of operation - valid options are encrypt or decrypt
+     [filepath] = the absolute path to the file.  Relative paths may possibly be used, but the functionality has not been fully tested
+     yet.
+     
+The user may optionally execute the jar using no arguments. 
+    When using no arguments, the user is presented with an option to use the GUI or continue with the command line.  
+      If GUI is selected, the UI is shown and the user can continue operation using that.
+      If No GUI, the user is prompted to select the appropriate mode of operation.  Encryption or Decryption
+      After mode entry is complete, the user is prompted to enter the path to the file.  
+        **  Note:  Relative paths may possibly be used, however, the functionality has not been fully tested yet. **
+        
+      Once the appropriate options have been entered, the user is prompted to enter a password.  This password is not stored as it is used immediately. 
+      
+
+
+The UI is very minimal as it only contains a single editable text area where the user can enter the file system path to the specified file or they can use the associated button to open a file chooser to select a file.  Three buttons below the file selection are the available options, which are "Encrypt", "Decrypt", and "Exit".
 
 The Text Area at the bottom is an output area that shows the status of Encryption or Decryption success or failure.  If Encryption is successful, the location of the encrypted file with extension .aes is shown.  The same is true for decryption.  The output shows the files original filename (without the aes extension).
 
