@@ -6,6 +6,7 @@
 package capstone.fileio;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -78,6 +79,37 @@ public class FileIO {
     public void cleanup() {
         this.decFile = null;
         this.encFile = null;
+    }
+    /**
+     * This method performs a check on whether the File object passed has a
+     * suffix of "aes" which indicates the file is encrypted
+     *
+     * @param file The File object passed to the method
+     * @return A boolean value of True if file has "aes" suffix or False if it
+     * does not.
+     */
+    public boolean isEncrypted(File file) {
+        return file.getName().endsWith("aes");
+    }
+
+    /**
+     * This method performs a check on whether the Path object passed has a
+     * suffix of "aes" in the filename which indicates the file is encrypted
+     *
+     * @param path The Path object passed to the method
+     * @return A boolean value of True if file associated with the passed Path
+     * object has an "aes" suffix or False if it does not.
+     */
+    public boolean isEncrypted(Path path) {
+        int count = path.getNameCount();
+        int length=path.getName(count-1).toString().length();
+        String ext = path.getName(count-1).toString().substring(length-3);
+        System.out.println(count + " : " + ext);
+        return ext.equals("aes");
+        
+    }
+    public boolean isValidFile(Path path){
+        return Files.exists(path);
     }
 
 }
