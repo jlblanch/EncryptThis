@@ -101,7 +101,7 @@ public class Encryption {
         outFile.flush();
         outFile.close();
 
-        System.out.println("File Encrypted.");
+        
 
         return file + ".aes";
 
