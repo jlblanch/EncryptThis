@@ -12,6 +12,7 @@ import capstone.fileio.FileIO;
 
 //Todo:  Possible move all File I/O Operations to File IO class
 import java.io.File;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -285,6 +286,7 @@ public class EncUI extends javax.swing.JFrame {
 
     private void fileTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileTextFieldActionPerformed
         Path path = Paths.get(fileTextField.getText()).toAbsolutePath();
+        infoTextArea.append("\n Selected FIle Path:"+path.toString());
         if (Files.exists(path)) {
             if (fio.isEncrypted(path)) {
                 encButton.setEnabled(false);
