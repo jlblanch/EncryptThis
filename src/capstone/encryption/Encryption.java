@@ -2,11 +2,10 @@ package capstone.encryption;
 
 /**
  * Created by Jeremy Blanchard on 7/13/2016. This class takes a file as an input
- * stream which is saved to a byte array In addition to the encrypted file
- * creation, 2 additional files are created which are needed for decryption.
+ * stream which is saved to a byte array.   The user will then enter a password. The 
+ * password is then combined with a SecureRandom
  *
- * All files and keys are generated and converted to a byte array which is then
- * output as files.
+ * 
  */
 //File IO imports
 import capstone.fileio.FileIO;
@@ -26,7 +25,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * This class performs the file encryption. First a password is created by the
- * user which is then combined with a SecureRandom and then hashed.
+ * user.  This password is combined with an 8-byte SecureRandom which is then used to generate the key
+ * used to initialize the cipher.  An initialization vector, which introduces randomness when ciphering similar plain text, is created.  
+ * The SecureRandom, IV, and ciphertext are then output to a file, adding the ".aes" extension.
  *
  * @author Jeremy Blanchard
  */
@@ -40,11 +41,15 @@ public class Encryption {
    
 
     /**
-     *
-     * @param file the file to be encrypted
-     * @param password The users password
-     * @return the output filename
-     * @throws Exception
+     * The Encryption.encrypt method performs the encryption operation.  This method is passed 2 arguments.  
+     * The first is the File to be encrypted, and the second argument is the users password.  
+     * @param file The file to be encrypted
+     * @param password The users password which is then combined with a automatically generated SecureRandom.  This hash is then used 
+     * generate the encryption key which is used to initialize the cipher for Encryption.
+     * @return The filename including the path to the file.
+     * @throws Exception  There are a number of exceptions that could potentially be thrown during the encryption process. 
+     * Including IOException which indicates there was an error in reading/writing the file stream, NoSuchAlgorithmException indicates 
+     * that the system does not have the associated algorithm available.  
      */
     public static String encrypt(File file, String password) throws Exception {
         FileOutputStream outFile;
