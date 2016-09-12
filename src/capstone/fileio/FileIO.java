@@ -89,6 +89,7 @@ public class FileIO {
      * does not.
      */
     public boolean isEncrypted(File file) {
+        
         return file.getName().endsWith("aes");
     }
 
@@ -101,15 +102,10 @@ public class FileIO {
      * object has an "aes" suffix or False if it does not.
      */
     public boolean isEncrypted(Path path) {
-        int count = path.getNameCount();
-        int length=path.getName(count-1).toString().length();
-        String ext = path.getName(count-1).toString().substring(length-3);
-        System.out.println(count + " : " + ext);
-        return ext.equals("aes");
-        
+        return path.endsWith("aes");
     }
     public boolean isValidFile(Path path){
-        return Files.exists(path);
+        return (Files.exists(path) && !Files.isDirectory(path));
     }
 
 }
