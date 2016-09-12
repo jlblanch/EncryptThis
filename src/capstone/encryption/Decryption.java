@@ -31,11 +31,14 @@ public class Decryption {
     
        
     /**
+     * This method contains the decryption process.  
      * 
-     * @param file
-     * @param password
-     * @return
-     * @throws Exception 
+     * @param file The file to be encrypted.
+     * @param password  The users password.  The password is combined with a salt which is embedded in the ciphertext and then used to 
+     * generate the encryption key.  The generated encryption key is then used to initialize the cipher for decryption.
+     * @return  The filename including the path to the new file.
+     * @throws Exception Any exception thrown during the decryption process causing the decryption to fail.  Most common exception thrown
+     * is a BadPaddingException which indicates that the user has entered an incorrect password and the cipher fails to initialize.
      */
     public static String decrypt(File file, String password) throws Exception {
 	
